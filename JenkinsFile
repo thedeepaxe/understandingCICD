@@ -58,7 +58,7 @@ pipeline {
                     git config user.email "karim.feki@supcom.tn"
                     git config user.name "thedeepaxe"
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    perl -pi -e "s/\d+/${BUILD_NUMBER}/g" deployment.yml
+                    awk -v build_number="${BUILD_NUMBER}" '{gsub(/[0-9]+/, build_number)}1' deployment.yml > temp && mv temp deployment.yml
                     git add deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
